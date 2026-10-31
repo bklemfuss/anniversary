@@ -100,6 +100,74 @@
       z-index: 20;
       box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
     }
+
+    /* 3 Card Poker Table & Card Flip Styles */
+    .poker-felt {
+      background: radial-gradient(circle at 50% 30%, #196b43 0%, #0d462b 75%, #072919 100%);
+      box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.7);
+    }
+    .card-slot {
+      perspective: 800px;
+      width: 54px;
+      height: 78px;
+    }
+    @media (min-width: 640px) {
+      .card-slot {
+        width: 64px;
+        height: 92px;
+      }
+    }
+    .playing-card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease;
+    }
+    .playing-card.flipped {
+      transform: rotateY(180deg);
+    }
+    .card-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    }
+    .card-back {
+      background: linear-gradient(135deg, #914d57 0%, #591c27 100%);
+      border: 2px solid #FBF8F3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card-front {
+      background: #ffffff;
+      transform: rotateY(180deg);
+      border: 1px solid #e5e7eb;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 4px 5px;
+      user-select: none;
+    }
+    /* Chip Drop Animation */
+    @keyframes chipDrop {
+      0% {
+        opacity: 0;
+        transform: translateY(-28px) scale(1.35);
+      }
+      70% {
+        transform: translateY(2px) scale(0.95);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    .poker-chip {
+      animation: chipDrop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
   </style>
 </head>
 <body class="bg-gradient-to-br from-blush-50 via-champagne-100 to-[#fff0f3] text-gray-800 font-sans min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 overflow-x-hidden selection:bg-rose-200">
@@ -262,17 +330,17 @@
       <div class="space-y-3">
         <div class="flex items-center justify-between">
           <h3 class="font-serif font-bold text-gray-800 text-lg flex items-center gap-2">
-            <span>📸</span> Our Moments
+            <span></span> Our Moments
           </h3>
           <!-- Quick Photo Preview / Upload button for testing without code edits -->
           <button id="btn-toggle-photo-tools" class="text-xs text-rose-gold hover:underline font-semibold flex items-center gap-1">
-            <span>🖼️ Swap Photos</span>
+            <span> Swap Photos</span>
           </button>
         </div>
 
-        <!-- Interactive Quick Photo Uploader (Allows Brian to easily drop pictures directly in browser) -->
+        <!-- Interactive Quick Photo Uploader (Allows to easily drop pictures directly in browser) -->
         <div id="photo-upload-panel" class="hidden bg-blush-50 border border-rose-200 rounded-xl p-3 text-xs space-y-2">
-          <p class="font-medium text-gray-700">Quickly test or replace photos directly from your computer:</p>
+          <p class="font-medium text-gray-700">I need to remove this...:</p>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
             <div>
               <label class="block font-semibold text-gray-600 mb-1">Photo 1:</label>
@@ -356,20 +424,245 @@
         </div>
       </div>
 
-      <!-- Replay / Celebration button -->
+      <!-- Play 3 Card Poker Button (Replaces More Confetti button) -->
       <div class="text-center pt-2">
-        <button id="btn-fire-confetti" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-rose-200 text-rose-gold font-medium text-xs hover:bg-rose-50 shadow-sm transition-all active:scale-95">
-          <span>✨ More Confetti!</span>
+        <button id="btn-open-poker" class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-2xl bg-gradient-to-r from-emerald-700 via-emerald-600 to-teal-700 hover:from-emerald-600 hover:to-teal-600 text-white font-bold text-sm sm:text-base shadow-xl shadow-emerald-900/20 border-2 border-champagne-500/80 transition-all transform active:scale-95">
+          <span>🃏 Play 3 Card Poker Together!</span>
         </button>
       </div>
 
     </div>
 
+    <!-- ================= STAGE 5: 3 CARD POKER TABLE ================= -->
+    <div id="stage-poker" class="hidden space-y-5 py-1">
+      <div class="flex items-center justify-between">
+        <button id="btn-back-to-reveal" class="text-xs font-semibold text-gray-500 hover:text-rose-gold flex items-center gap-1 transition-colors">
+          <span>← Back to Letter &amp; Photos</span>
+        </button>
+        <span class="text-[11px] font-bold uppercase tracking-widest text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full">
+          Table Minimum: 1 ❤️
+        </span>
+      </div>
+
+      <!-- Casino Felt Table -->
+      <div class="poker-felt rounded-3xl border-[6px] border-[#3d2314] p-4 sm:p-6 text-white relative overflow-hidden shadow-2xl space-y-6">
+        <!-- Subtle Table Arc Text -->
+        <div class="text-center border-b border-yellow-500/20 pb-3">
+          <p class="text-[10px] sm:text-xs tracking-[0.2em] uppercase text-yellow-300/80 font-serif font-bold">
+            ★ Three Card Poker &bull; Pair Plus Pays 40 to 1 on Straight Flush ★
+          </p>
+        </div>
+
+        <!-- DEALER AREA -->
+        <div class="flex flex-col items-center space-y-2">
+          <div class="flex items-center gap-2">
+            <span class="text-xs uppercase tracking-widest font-bold text-yellow-200/90">Dealer</span>
+            <span id="badge-hand-dealer" class="hidden text-[10px] font-bold bg-red-900/90 border border-red-400 text-red-100 px-2 py-0.5 rounded-full">
+              Queen High (Loses!)
+            </span>
+          </div>
+          <div id="cards-dealer" class="flex justify-center gap-2 sm:gap-2.5 min-h-[78px] sm:min-h-[92px] items-center">
+            <div class="w-12 h-16 sm:w-14 sm:h-20 rounded-lg border border-dashed border-white/20 flex items-center justify-center text-white/20 text-xs">🂠</div>
+            <div class="w-12 h-16 sm:w-14 sm:h-20 rounded-lg border border-dashed border-white/20 flex items-center justify-center text-white/20 text-xs">🂠</div>
+            <div class="w-12 h-16 sm:w-14 sm:h-20 rounded-lg border border-dashed border-white/20 flex items-center justify-center text-white/20 text-xs">🂠</div>
+          </div>
+        </div>
+
+        <!-- Status Banner on Felt -->
+        <div class="bg-black/35 border border-yellow-400/30 rounded-xl py-2 px-3 text-center">
+          <p id="poker-status-msg" class="text-xs sm:text-sm font-medium text-champagne-100">
+            Place your bets to deal the cards!
+          </p>
+        </div>
+
+        <!-- TWO PLAYER SPOTS: DEV (Left) & BRIAN (Right) -->
+        <div class="grid grid-cols-2 gap-3 sm:gap-6 pt-1">
+          
+          <!-- SPOT 1: DEV -->
+          <div class="bg-black/20 border border-white/10 rounded-2xl p-2.5 sm:p-3.5 flex flex-col items-center space-y-3">
+            <!-- Dev's Cards -->
+            <div class="space-y-1 text-center w-full">
+              <div class="flex items-center justify-center gap-1 min-h-[18px]">
+                <span id="badge-hand-dev" class="hidden text-[10px] font-bold bg-rose-600 text-white px-2 py-0.5 rounded-full shadow animate-pulse">
+                  🔥 Hearts Straight Flush!
+                </span>
+              </div>
+              <div id="cards-dev" class="flex justify-center gap-1 sm:gap-1.5 min-h-[78px] sm:min-h-[92px] items-center">
+                <div class="w-12 h-16 sm:w-14 sm:h-20 rounded-lg border border-dashed border-white/20 flex items-center justify-center text-white/20 text-xs">❤️</div>
+                <div class="w-12 h-16 sm:w-14 sm:h-20 rounded-lg border border-dashed border-white/20 flex items-center justify-center text-white/20 text-xs">❤️</div>
+                <div class="w-12 h-16 sm:w-14 sm:h-20 rounded-lg border border-dashed border-white/20 flex items-center justify-center text-white/20 text-xs">❤️</div>
+              </div>
+            </div>
+
+            <!-- Dev's Betting Circles (Pair Plus, Ante, Play) -->
+            <div class="flex flex-col items-center space-y-2 w-full pt-1">
+              <div class="flex items-center justify-center gap-2 sm:gap-3">
+                <!-- Pair Plus Circle -->
+                <div class="flex flex-col items-center">
+                  <div id="circle-dev-pairplus" class="w-11 h-11 sm:w-12 sm:h-12 rounded-full border-2 border-yellow-400/70 bg-emerald-950/60 flex items-center justify-center relative shadow-inner">
+                    <span class="text-[8px] sm:text-[9px] uppercase font-bold text-yellow-300/80 text-center leading-tight">Pair<br>Plus</span>
+                  </div>
+                </div>
+                <!-- Ante Circle -->
+                <div class="flex flex-col items-center">
+                  <div id="circle-dev-ante" class="w-11 h-11 sm:w-12 sm:h-12 rounded-full border-2 border-yellow-400/70 bg-emerald-950/60 flex items-center justify-center relative shadow-inner">
+                    <span class="text-[8px] sm:text-[9px] uppercase font-bold text-yellow-300/80">Ante</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Play Circle -->
+              <div id="circle-dev-play" class="w-11 h-11 sm:w-12 sm:h-12 rounded-full border-2 border-dashed border-yellow-300/60 bg-emerald-950/40 flex items-center justify-center relative">
+                <span class="text-[8px] sm:text-[9px] uppercase font-bold text-yellow-200/70">Play</span>
+              </div>
+            </div>
+
+            <!-- Player Name Below Betting Circles -->
+            <div class="pt-1 border-t border-white/10 w-full text-center">
+              <span class="font-serif font-bold text-sm sm:text-base text-champagne-200 tracking-wide">Dev</span>
+            </div>
+          </div>
+
+          <!-- SPOT 2: BRIAN -->
+          <div class="bg-black/20 border border-white/10 rounded-2xl p-2.5 sm:p-3.5 flex flex-col items-center space-y-3">
+            <!-- Brian's Cards -->
+            <div class="space-y-1 text-center w-full">
+              <div class="flex items-center justify-center gap-1 min-h-[18px]">
+                <span id="badge-hand-brian" class="hidden text-[10px] font-bold bg-rose-600 text-white px-2 py-0.5 rounded-full shadow animate-pulse">
+                  🔥 Hearts Straight Flush!
+                </span>
+              </div>
+              <div id="cards-brian" class="flex justify-center gap-1 sm:gap-1.5 min-h-[78px] sm:min-h-[92px] items-center">
+                <div class="w-12 h-16 sm:w-14 sm:h-20 rounded-lg border border-dashed border-white/20 flex items-center justify-center text-white/20 text-xs">❤️</div>
+                <div class="w-12 h-16 sm:w-14 sm:h-20 rounded-lg border border-dashed border-white/20 flex items-center justify-center text-white/20 text-xs">❤️</div>
+                <div class="w-12 h-16 sm:w-14 sm:h-20 rounded-lg border border-dashed border-white/20 flex items-center justify-center text-white/20 text-xs">❤️</div>
+              </div>
+            </div>
+
+            <!-- Brian's Betting Circles (Pair Plus, Ante, Play) -->
+            <div class="flex flex-col items-center space-y-2 w-full pt-1">
+              <div class="flex items-center justify-center gap-2 sm:gap-3">
+                <!-- Pair Plus Circle -->
+                <div class="flex flex-col items-center">
+                  <div id="circle-brian-pairplus" class="w-11 h-11 sm:w-12 sm:h-12 rounded-full border-2 border-yellow-400/70 bg-emerald-950/60 flex items-center justify-center relative shadow-inner">
+                    <span class="text-[8px] sm:text-[9px] uppercase font-bold text-yellow-300/80 text-center leading-tight">Pair<br>Plus</span>
+                  </div>
+                </div>
+                <!-- Ante Circle -->
+                <div class="flex flex-col items-center">
+                  <div id="circle-brian-ante" class="w-11 h-11 sm:w-12 sm:h-12 rounded-full border-2 border-yellow-400/70 bg-emerald-950/60 flex items-center justify-center relative shadow-inner">
+                    <span class="text-[8px] sm:text-[9px] uppercase font-bold text-yellow-300/80">Ante</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Play Circle -->
+              <div id="circle-brian-play" class="w-11 h-11 sm:w-12 sm:h-12 rounded-full border-2 border-dashed border-yellow-300/60 bg-emerald-950/40 flex items-center justify-center relative">
+                <span class="text-[8px] sm:text-[9px] uppercase font-bold text-yellow-200/70">Play</span>
+              </div>
+            </div>
+
+            <!-- Player Name Below Betting Circles -->
+            <div class="pt-1 border-t border-white/10 w-full text-center">
+              <span class="font-serif font-bold text-sm sm:text-base text-champagne-200 tracking-wide">Brian</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- POKER ACTION CONTROLS -->
+        <div class="pt-2">
+          <!-- Step 1: Deal / Place Initial Bets Button -->
+          <div id="poker-controls-deal" class="flex justify-center">
+            <button id="btn-poker-bet-deal" class="w-full max-w-xs py-3.5 px-6 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-gray-950 font-black rounded-2xl shadow-lg transform active:scale-95 transition-all text-sm sm:text-base uppercase tracking-wider border-2 border-yellow-200">
+              🪙 Place Ante &amp; Pair Plus Bets
+            </button>
+          </div>
+
+          <!-- Step 2: Play Bet or Fold Buttons -->
+          <div id="poker-controls-decision" class="hidden flex items-center justify-center gap-3 sm:gap-4">
+            <button id="btn-poker-fold" class="flex-1 max-w-[140px] py-3.5 px-4 bg-red-800/90 hover:bg-red-700 text-white font-bold rounded-2xl border border-red-400/50 shadow-md transform active:scale-95 transition-all text-xs sm:text-sm uppercase tracking-wider">
+              ✖ Fold
+            </button>
+            <button id="btn-poker-play" class="flex-1 max-w-[200px] py-3.5 px-5 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-400 hover:to-green-400 text-gray-950 font-black rounded-2xl border-2 border-emerald-200 shadow-lg transform active:scale-95 transition-all text-xs sm:text-sm uppercase tracking-wider">
+              ✔ Bet (Play 1x)
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </main>
+
+  <!-- ================= SOUTHWEST GIFT CARD WINNER MODAL ================= -->
+  <div id="modal-southwest" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border-4 border-champagne-500 text-center space-y-5 relative overflow-hidden">
+      <!-- Top Decorative Airline Header -->
+      <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-tr from-blue-600 via-red-500 to-amber-400 flex items-center justify-center text-3xl shadow-md text-white">
+        ✈️
+      </div>
+
+      <div class="space-y-2">
+        <span class="inline-block px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs uppercase tracking-wider">
+          Double Straight Flush Payout! 🎉
+        </span>
+        <h3 class="font-serif text-2xl sm:text-3xl font-bold text-gray-900">
+          Congratulations Baby!
+        </h3>
+        <p class="text-gray-600 text-sm sm:text-base leading-relaxed">
+          You win a <strong>Southwest Airlines Gift Card</strong> so we can be together soon! ❤️
+        </p>
+      </div>
+
+      <!-- Southwest Styled Gift Card Box -->
+      <div class="bg-gradient-to-br from-[#304CB2] via-[#1E3282] to-[#111C4E] text-white p-5 rounded-2xl shadow-lg border border-blue-300/30 text-left space-y-4 relative overflow-hidden">
+        <div class="flex items-center justify-between border-b border-white/15 pb-2.5">
+          <div>
+            <span class="font-black tracking-tight text-lg sm:text-xl text-white">Southwest</span>
+            <span class="text-amber-400 font-bold text-lg">❤️</span>
+          </div>
+          <span class="text-[10px] uppercase tracking-widest bg-white/15 px-2.5 py-1 rounded-full font-semibold">
+            Gift Card
+          </span>
+        </div>
+
+        <!-- Gift Card Code Display Area (Update the code string below once purchased!) -->
+        <div class="space-y-1.5">
+          <p class="text-[10px] uppercase tracking-widest text-blue-200 font-semibold">
+            Gift Card Claim Code / PIN:
+          </p>
+          <div class="bg-black/35 border border-white/25 rounded-xl p-3 flex items-center justify-between gap-2">
+            <!-- Put Southwest Gift Card code inside #southwest-gift-code below -->
+            <code id="southwest-gift-code" class="font-mono text-sm sm:text-base font-bold text-amber-300 tracking-wider select-all">
+              SW-XXXX-XXXX-XXXX
+            </code>
+            <button id="btn-copy-code" class="text-xs bg-white/20 hover:bg-white/30 text-white px-2.5 py-1.5 rounded-lg font-semibold transition-colors flex-shrink-0">
+              Copy
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between text-[11px] text-blue-200 pt-1">
+          <span>Passenger: <strong>Dev ❤️</strong></span>
+          <span>Destination: <strong>With Brian</strong></span>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-2.5 pt-2">
+        <button id="btn-play-poker-again" class="flex-1 py-3 px-4 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100 font-semibold text-xs sm:text-sm transition-all">
+          Play Another Hand
+        </button>
+        <button id="btn-close-modal" class="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-rose-gold to-[#c87d89] text-white font-semibold text-xs sm:text-sm shadow-md hover:opacity-95 transition-all">
+          Back to Our Memories
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Sweet Footer -->
   <footer class="w-full max-w-xl mx-auto text-center py-4 text-xs text-gray-400 z-10">
-    Dev &amp; Brian &bull; November 15 &bull; kyntra.dev
+    Dev &amp; Brian &bull; November 15
   </footer>
 
   <!-- ================= JAVASCRIPT LOGIC ================= -->
@@ -389,7 +682,7 @@
         ],
         // Index of the correct answer (D = index 3)
         correctIndex: 3,
-        hintText: "You definitely said 3 of these things! 😂"
+        hintText: "You definitely said 3 of these things!"
       },
       {
         memoryLabel: "Memory #2",
@@ -402,7 +695,7 @@
         ],
         // Index of the correct answer (A = index 0)
         correctIndex: 0,
-        hintText: "Think of the lakes!"
+        hintText: "Think of the lakes"
       },
       {
         memoryLabel: "Memory #3",
@@ -415,7 +708,7 @@
         ],
         // Index of the correct answer (A = index 0)
         correctIndex: 0,
-        hintText: "The leftovers were soooo good"
+        hintText: "The leftovers were amazing too!"
       },
       {
         memoryLabel: "Memory #4",
@@ -428,19 +721,19 @@
         ],
         // Index of the correct answer (B = index 1)
         correctIndex: 1,
-        hintText: "Count them on one hand!"
+        hintText: "Count them on one hand"
       },
       {
         memoryLabel: "Memory #5",
         question: "What is my absolute favorite thing about you?",
         options: [
-          "Your incredible smile and stupid sense of humor",
+          "Your incredible smile that lights up any room",
           "How sweet, caring, and thoughtful you are",
-          "How easily you make me laugh and feel at home",
+          "How easily you make him laugh and feel at home",
           "All of the above, plus a million more reasons!"
         ],
         correctIndex: 3,
-        hintText: "Not just that!"
+        hintText: "LOVE YOU"
       }
     ];
 
@@ -548,6 +841,7 @@
     const stageQuiz = document.getElementById('stage-quiz');
     const stageSlot = document.getElementById('stage-slot');
     const stageReveal = document.getElementById('stage-reveal');
+    const stagePoker = document.getElementById('stage-poker');
 
     const btnStart = document.getElementById('btn-start');
     const quizMemoryLabel = document.getElementById('quiz-memory-label');
@@ -565,7 +859,7 @@
     const reel1 = document.getElementById('reel-1');
     const reel2 = document.getElementById('reel-2');
     const reel3 = document.getElementById('reel-3');
-    const btnFireConfetti = document.getElementById('btn-fire-confetti');
+    const btnOpenPoker = document.getElementById('btn-open-poker');
 
     // Photo preview upload tools
     const btnTogglePhotoTools = document.getElementById('btn-toggle-photo-tools');
@@ -673,7 +967,7 @@
 
       if (selectedOptionIndex === currentQ.correctIndex) {
         sound.playClick();
-        feedbackMsg.textContent = "✨ Correct! I knew you'd get it!";
+        feedbackMsg.textContent = "You're so smart :)";
         feedbackMsg.className = "text-center text-sm font-semibold py-2.5 px-4 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200";
         feedbackMsg.classList.remove('hidden');
 
@@ -695,7 +989,7 @@
         void quizCard.offsetWidth;
         quizCard.classList.add('animate-shake');
 
-        feedbackMsg.textContent = `${currentQ.hintText} Give it another shot! ❤️`;
+        feedbackMsg.textContent = `${currentQ.hintText} Try again ❤️`;
         feedbackMsg.className = "text-center text-sm font-semibold py-2.5 px-4 rounded-xl bg-rose-50 text-rose-600 border border-rose-200";
         feedbackMsg.classList.remove('hidden');
       }
@@ -740,7 +1034,7 @@
       isSpinning = true;
       btnSpin.disabled = true;
       btnSpin.classList.add('opacity-50', 'cursor-not-allowed');
-      slotStatusText.textContent = "Spinning... my heart is locked in!";
+      slotStatusText.textContent = "Spinning...";
 
       const tickInterval = setInterval(() => {
         sound.playTick();
@@ -775,7 +1069,7 @@
       setTimeout(() => {
         clearInterval(tickInterval);
         sound.playJackpotFanfare();
-        slotStatusText.textContent = "❤️❤️❤️ 3 HEARTS! You Won! ❤️❤️❤️";
+        slotStatusText.textContent = "❤️❤️❤️ 3 HEARTS! ❤️❤️❤️";
         
         triggerJackpotCelebration();
 
@@ -828,9 +1122,279 @@
       }, 250);
     }
 
-    btnFireConfetti.addEventListener('click', () => {
+    /* ==========================================================
+       6B. 3 CARD POKER GAME LOGIC
+       ========================================================== */
+    const btnBackToReveal = document.getElementById('btn-back-to-reveal');
+    const btnPokerBetDeal = document.getElementById('btn-poker-bet-deal');
+    const btnPokerFold = document.getElementById('btn-poker-fold');
+    const btnPokerPlay = document.getElementById('btn-poker-play');
+    const pokerControlsDeal = document.getElementById('poker-controls-deal');
+    const pokerControlsDecision = document.getElementById('poker-controls-decision');
+    const pokerStatusMsg = document.getElementById('poker-status-msg');
+
+    const cardsDealerEl = document.getElementById('cards-dealer');
+    const cardsDevEl = document.getElementById('cards-dev');
+    const cardsBrianEl = document.getElementById('cards-brian');
+
+    const badgeHandDealer = document.getElementById('badge-hand-dealer');
+    const badgeHandDev = document.getElementById('badge-hand-dev');
+    const badgeHandBrian = document.getElementById('badge-hand-brian');
+
+    const circleDevPairPlus = document.getElementById('circle-dev-pairplus');
+    const circleDevAnte = document.getElementById('circle-dev-ante');
+    const circleDevPlay = document.getElementById('circle-dev-play');
+    const circleBrianPairPlus = document.getElementById('circle-brian-pairplus');
+    const circleBrianAnte = document.getElementById('circle-brian-ante');
+    const circleBrianPlay = document.getElementById('circle-brian-play');
+
+    const modalSouthwest = document.getElementById('modal-southwest');
+    const btnPlayPokerAgain = document.getElementById('btn-play-poker-again');
+    const btnCloseModal = document.getElementById('btn-close-modal');
+    const btnCopyCode = document.getElementById('btn-copy-code');
+    const southwestGiftCode = document.getElementById('southwest-gift-code');
+
+    // Fixed Rigged Hands:
+    // Dev gets Ace-King-Queen of Hearts (Royal/Straight Flush)
+    const DEV_HAND = [
+      { rank: 'Q', suit: '♥', color: 'text-rose-600' },
+      { rank: 'K', suit: '♥', color: 'text-rose-600' },
+      { rank: 'A', suit: '♥', color: 'text-rose-600' }
+    ];
+    // Brian gets 9-10-J of Hearts (Straight Flush)
+    const BRIAN_HAND = [
+      { rank: '9', suit: '♥', color: 'text-rose-600' },
+      { rank: '10', suit: '♥', color: 'text-rose-600' },
+      { rank: 'J', suit: '♥', color: 'text-rose-600' }
+    ];
+    // Dealer gets Queen-7-2 offsuit (Losing hand)
+    const DEALER_HAND = [
+      { rank: '2', suit: '♣', color: 'text-gray-900' },
+      { rank: '7', suit: '♠', color: 'text-gray-900' },
+      { rank: 'Q', suit: '♦', color: 'text-rose-600' }
+    ];
+
+    let isPokerBusy = false;
+
+    // Open Poker Table from Reveal Screen
+    btnOpenPoker.addEventListener('click', () => {
       sound.playClick();
-      triggerConfettiBurst();
+      stageReveal.classList.add('hidden');
+      stagePoker.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      resetPokerTable();
+    });
+
+    btnBackToReveal.addEventListener('click', () => {
+      sound.playClick();
+      stagePoker.classList.add('hidden');
+      stageReveal.classList.remove('hidden');
+    });
+
+    function createChipHTML(label = '$25', bgClass = 'from-rose-500 to-red-700') {
+      return `
+        <div class="poker-chip absolute inset-1 rounded-full bg-gradient-to-b ${bgClass} border-2 border-dashed border-white shadow-lg flex items-center justify-center">
+          <span class="text-[9px] font-black text-white drop-shadow">${label}</span>
+        </div>
+      `;
+    }
+
+    function createCardSlotHTML(card, idPrefix, idx) {
+      return `
+        <div class="card-slot">
+          <div id="${idPrefix}-card-${idx}" class="playing-card opacity-0">
+            <div class="card-face card-back">
+              <span class="text-sm">❤️</span>
+            </div>
+            <div class="card-face card-front ${card.color}">
+              <div class="text-left font-bold text-xs sm:text-sm leading-none">${card.rank}<br><span class="text-[10px]">${card.suit}</span></div>
+              <div class="text-center text-lg sm:text-2xl leading-none">${card.suit}</div>
+              <div class="text-right font-bold text-xs sm:text-sm leading-none rotate-180">${card.rank}</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function resetPokerTable() {
+      isPokerBusy = false;
+      pokerStatusMsg.textContent = "Place your bets to deal the cards!";
+      pokerControlsDeal.classList.remove('hidden');
+      pokerControlsDecision.classList.add('hidden');
+
+      badgeHandDealer.classList.add('hidden');
+      badgeHandDev.classList.add('hidden');
+      badgeHandBrian.classList.add('hidden');
+
+      // Reset Betting Circles
+      circleDevPairPlus.innerHTML = `<span class="text-[8px] sm:text-[9px] uppercase font-bold text-yellow-300/80 text-center leading-tight">Pair<br>Plus</span>`;
+      circleDevAnte.innerHTML = `<span class="text-[8px] sm:text-[9px] uppercase font-bold text-yellow-300/80">Ante</span>`;
+      circleDevPlay.innerHTML = `<span class="text-[8px] sm:text-[9px] uppercase font-bold text-yellow-200/70">Play</span>`;
+
+      circleBrianPairPlus.innerHTML = `<span class="text-[8px] sm:text-[9px] uppercase font-bold text-yellow-300/80 text-center leading-tight">Pair<br>Plus</span>`;
+      circleBrianAnte.innerHTML = `<span class="text-[8px] sm:text-[9px] uppercase font-bold text-yellow-300/80">Ante</span>`;
+      circleBrianPlay.innerHTML = `<span class="text-[8px] sm:text-[9px] uppercase font-bold text-yellow-200/70">Play</span>`;
+
+      // Reset Card Slots
+      cardsDealerEl.innerHTML = DEALER_HAND.map((c, i) => createCardSlotHTML(c, 'dealer', i)).join('');
+      cardsDevEl.innerHTML = DEV_HAND.map((c, i) => createCardSlotHTML(c, 'dev', i)).join('');
+      cardsBrianEl.innerHTML = BRIAN_HAND.map((c, i) => createCardSlotHTML(c, 'brian', i)).join('');
+    }
+
+    // Step 1: Place Ante & Pair Plus Bets & Deal Cards
+    btnPokerBetDeal.addEventListener('click', () => {
+      if (isPokerBusy) return;
+      isPokerBusy = true;
+      sound.playClick();
+      pokerControlsDeal.classList.add('hidden');
+      pokerStatusMsg.textContent = "Placing Ante & Pair Plus chips for Dev and Brian...";
+
+      // Animate chips into Dev & Brian's Ante and Pair Plus circles
+      setTimeout(() => {
+        sound.playTick();
+        circleDevPairPlus.insertAdjacentHTML('beforeend', createChipHTML('❤️', 'from-pink-500 to-rose-700'));
+        circleBrianPairPlus.insertAdjacentHTML('beforeend', createChipHTML('❤️', 'from-pink-500 to-rose-700'));
+      }, 150);
+
+      setTimeout(() => {
+        sound.playTick();
+        circleDevAnte.insertAdjacentHTML('beforeend', createChipHTML('$25', 'from-amber-400 to-yellow-600'));
+        circleBrianAnte.insertAdjacentHTML('beforeend', createChipHTML('$25', 'from-amber-400 to-yellow-600'));
+      }, 450);
+
+      // Deal cards in sequence
+      setTimeout(() => {
+        pokerStatusMsg.textContent = "Dealing cards...";
+        const dealOrder = [
+          'dev-card-0', 'brian-card-0', 'dealer-card-0',
+          'dev-card-1', 'brian-card-1', 'dealer-card-1',
+          'dev-card-2', 'brian-card-2', 'dealer-card-2'
+        ];
+
+        dealOrder.forEach((id, idx) => {
+          setTimeout(() => {
+            sound.playTick();
+            const cardEl = document.getElementById(id);
+            if (cardEl) cardEl.classList.remove('opacity-0');
+          }, idx * 140);
+        });
+
+        // Flip Dev's cards face-up after dealing finishes
+        setTimeout(() => {
+          [0, 1, 2].forEach((i) => {
+            setTimeout(() => {
+              sound.playClick();
+              const devCard = document.getElementById(`dev-card-${i}`);
+              if (devCard) devCard.classList.add('flipped');
+            }, i * 180);
+          });
+
+          setTimeout(() => {
+            badgeHandDev.classList.remove('hidden');
+            pokerStatusMsg.textContent = "Whoa, a Hearts Straight Flush!! Will you Bet or Fold?";
+            pokerControlsDecision.classList.remove('hidden');
+            isPokerBusy = false;
+          }, 650);
+
+        }, dealOrder.length * 140 + 250);
+
+      }, 850);
+    });
+
+    // Step 2A: If Dev Presses Fold -> Repeat Sequence
+    btnPokerFold.addEventListener('click', () => {
+      if (isPokerBusy) return;
+      sound.playWrong();
+      pokerStatusMsg.textContent = "Wait, you folded a Straight Flush?! Let's redeal that!";
+      pokerControlsDecision.classList.add('hidden');
+      isPokerBusy = true;
+
+      setTimeout(() => {
+        resetPokerTable();
+      }, 1400);
+    });
+
+    // Step 2B: If Dev Presses Bet -> Animate Play Chip, Flip Brian's Cards, Flip Dealer's Cards, Show Southwest Popup
+    btnPokerPlay.addEventListener('click', () => {
+      if (isPokerBusy) return;
+      isPokerBusy = true;
+      sound.playClick();
+      pokerControlsDecision.classList.add('hidden');
+      pokerStatusMsg.textContent = "Matching Ante in the Play circle!";
+
+      // Animate equal bet in Play circle for Dev and Brian
+      circleDevPlay.insertAdjacentHTML('beforeend', createChipHTML('$25', 'from-emerald-400 to-teal-700'));
+      circleBrianPlay.insertAdjacentHTML('beforeend', createChipHTML('$25', 'from-emerald-400 to-teal-700'));
+
+      // Flip Brian's cards face-up
+      setTimeout(() => {
+        pokerStatusMsg.textContent = "Flipping Brian's hand...";
+        [0, 1, 2].forEach((i) => {
+          setTimeout(() => {
+            sound.playClick();
+            const brianCard = document.getElementById(`brian-card-${i}`);
+            if (brianCard) brianCard.classList.add('flipped');
+          }, i * 180);
+        });
+
+        setTimeout(() => {
+          badgeHandBrian.classList.remove('hidden');
+        }, 550);
+      }, 700);
+
+      // Flip Dealer's cards face-up
+      setTimeout(() => {
+        pokerStatusMsg.textContent = "Flipping Dealer's hand...";
+        [0, 1, 2].forEach((i) => {
+          setTimeout(() => {
+            sound.playClick();
+            const dealerCard = document.getElementById(`dealer-card-${i}`);
+            if (dealerCard) dealerCard.classList.add('flipped');
+          }, i * 180);
+        });
+
+        setTimeout(() => {
+          badgeHandDealer.classList.remove('hidden');
+          sound.playJackpotFanfare();
+          pokerStatusMsg.textContent = " DOUBLE HEARTS STRAIGHT FLUSH! WE BOTH BEAT THE DEALER!";
+          triggerConfettiBurst();
+
+          // Show Southwest Gift Card Modal Popup
+          setTimeout(() => {
+            modalSouthwest.classList.remove('hidden');
+            isPokerBusy = false;
+          }, 1300);
+        }, 650);
+      }, 1900);
+    });
+
+    // Modal controls
+    btnPlayPokerAgain.addEventListener('click', () => {
+      sound.playClick();
+      modalSouthwest.classList.add('hidden');
+      resetPokerTable();
+    });
+
+    btnCloseModal.addEventListener('click', () => {
+      sound.playClick();
+      modalSouthwest.classList.add('hidden');
+      stagePoker.classList.add('hidden');
+      stageReveal.classList.remove('hidden');
+    });
+
+    btnCopyCode.addEventListener('click', () => {
+      sound.playClick();
+      const codeText = southwestGiftCode.textContent.trim();
+      const tempInput = document.createElement('textarea');
+      tempInput.value = codeText;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+      btnCopyCode.textContent = "Copied! ❤️";
+      setTimeout(() => {
+        btnCopyCode.textContent = "Copy";
+      }, 2000);
     });
 
     /* ==========================================================
