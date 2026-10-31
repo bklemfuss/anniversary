@@ -295,9 +295,9 @@
           <div class="polaroid-card bg-white p-2 sm:p-2.5 rounded-xl shadow-md border border-gray-100 rotate-[-2deg]">
             <div class="w-full aspect-[4/5] rounded-lg overflow-hidden bg-rose-50">
               <img id="photo-img-1" 
-                   src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=600&q=80" 
+                   src="photo1.jpg" 
                    alt="Special moment 1" 
-                   onerror="this.src='https://placehold.co/400x500/ffe3e3/914d57?text=Our+First+Photo';"
+                   onerror="this.src='https://placehold.co/400x500/ffe3e3/914d57?text=photo1.jpg';"
                    class="w-full h-full object-cover">
             </div>
             <p id="caption-1" class="text-center font-serif text-[11px] sm:text-xs text-gray-600 pt-2 font-medium">Where it all started</p>
@@ -307,9 +307,9 @@
           <div class="polaroid-card bg-white p-2 sm:p-2.5 rounded-xl shadow-md border border-gray-100 rotate-[3deg]">
             <div class="w-full aspect-[4/5] rounded-lg overflow-hidden bg-rose-50">
               <img id="photo-img-2" 
-                   src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=600&q=80" 
+                   src="photo2.jpg" 
                    alt="Special moment 2" 
-                   onerror="this.src='https://placehold.co/400x500/ffe3e3/914d57?text=Our+Favorite+Trip';"
+                   onerror="this.src='https://placehold.co/400x500/ffe3e3/914d57?text=photo2.jpg';"
                    class="w-full h-full object-cover">
             </div>
             <p id="caption-2" class="text-center font-serif text-[11px] sm:text-xs text-gray-600 pt-2 font-medium">Our adventures</p>
@@ -319,9 +319,9 @@
           <div class="polaroid-card bg-white p-2 sm:p-2.5 rounded-xl shadow-md border border-gray-100 rotate-[-1deg] col-span-2 sm:col-span-1 max-w-[200px] sm:max-w-none mx-auto w-full">
             <div class="w-full aspect-[4/5] rounded-lg overflow-hidden bg-rose-50">
               <img id="photo-img-3" 
-                   src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=600&q=80" 
+                   src="photo3.jpg" 
                    alt="Special moment 3" 
-                   onerror="this.src='https://placehold.co/400x500/ffe3e3/914d57?text=Us+Always';"
+                   onerror="this.src='https://placehold.co/400x500/ffe3e3/914d57?text=photo3.jpg';"
                    class="w-full h-full object-cover">
             </div>
             <p id="caption-3" class="text-center font-serif text-[11px] sm:text-xs text-gray-600 pt-2 font-medium">To forever & always</p>
@@ -376,57 +376,59 @@
   <script>
     /* ==========================================================
        1. CUSTOMIZABLE 5 TRIVIA QUESTIONS DATA
-       Brian: You can easily edit any questions, options, and answers right here!
        ========================================================== */
     const triviaQuestions = [
       {
         memoryLabel: "Memory #1",
-        question: "Where did Brian take you on our very first official date?",
+        question: "Which of these is NOT something you said?",
         options: [
-          "That cozy candlelit dinner where we couldn't stop talking",
-          "A quiet coffee walk that turned into hours together",
-          "Our favorite local hangout spot",
-          "An impromptu evening drive under the stars"
+          "\"Two insults back to back is a double negative so it's not offensive\"",
+          "\"Shut up when you're talking to me\"",
+          "\"It's 9:11 make a wish\"",
+          "\"We did lasterday\""
         ],
-        // Index of the correct answer (0 = 1st, 1 = 2nd, 2 = 3rd, 3 = 4th)
-        correctIndex: 0,
-        hintText: "Think back to when we were both a little nervous!"
+        // Index of the correct answer (D = index 3)
+        correctIndex: 3,
+        hintText: "You definitely said 3 of these unhinged things! 😂"
       },
       {
         memoryLabel: "Memory #2",
-        question: "What is Brian's go-to snack or guilty pleasure food when we chill together?",
+        question: "Where did we get our matching tattoo?",
         options: [
-          "Late night pizza slices",
-          "Ice cream and sweet treats",
-          "Salty chips and guacamole",
-          "Anything as long as you're sharing it with him"
+          "Great Lakes Tattoo",
+          "Midwest Ink & Needle",
+          "Old Town Tattoo Studio",
+          "Rust Belt Tattoo Co."
         ],
-        correctIndex: 3,
-        hintText: "You already know everything is better shared with you!"
+        // Index of the correct answer (A = index 0)
+        correctIndex: 0,
+        hintText: "Think of the lakes! 🌊"
       },
       {
         memoryLabel: "Memory #3",
-        question: "What was one of our funniest or most memorable adventures this year?",
+        question: "What's the first thing you cooked for me?",
         options: [
-          "Getting hopelessly lost but laughing the entire way",
-          "Cooking together and almost setting off the smoke detector",
-          "Singing out of tune in the car with the windows rolled down",
-          "All of our spontaneous late-night conversations"
+          "Lasagne",
+          "Cheesecake cups",
+          "Potato Soup",
+          "Shepherds Pie"
         ],
-        correctIndex: 1,
-        hintText: "Remember the chef moments in the kitchen!"
+        // Index of the correct answer (A = index 0)
+        correctIndex: 0,
+        hintText: "Cheesy, layered, and made with love!"
       },
       {
         memoryLabel: "Memory #4",
-        question: "What song or moment always reminds Brian of you?",
+        question: "How many states have we been to together?",
         options: [
-          "The song playing in the background during our long drives",
-          "Our favorite playlist that we put on every weekend",
-          "Any song that makes you start randomly dancing",
-          "Every love song on the radio now"
+          "4",
+          "5",
+          "6",
+          "3"
         ],
-        correctIndex: 2,
-        hintText: "Brian loves seeing your spontaneous happy dance!"
+        // Index of the correct answer (B = index 1)
+        correctIndex: 1,
+        hintText: "Count them on one hand! 🚗"
       },
       {
         memoryLabel: "Memory #5",
