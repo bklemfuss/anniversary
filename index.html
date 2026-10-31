@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy 1st Anniversary, Dev!</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Canvas Confetti for the Grand Reveal -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Playfair Display"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            blush: {
+              50: '#fff5f5',
+              100: '#ffe3e3',
+              200: '#ffc9c9',
+              300: '#ffa8a8',
+              400: '#ff8787',
+              500: '#fa5252',
+            },
+            champagne: {
+              100: '#FBF8F3',
+              200: '#F4ECE1',
+              300: '#EBDDC9',
+              500: '#D4AF37',
+              600: '#B8860B',
+            },
+            rose: {
+              gold: '#B76E79',
+              deep: '#914d57',
+            }
+          },
+          keyframes: {
+            shake: {
+              '0%, 100%': { transform: 'translateX(0)' },
+              '20%, 60%': { transform: 'translateX(-8px)' },
+              '40%, 80%': { transform: 'translateX(8px)' },
+            },
+            pulseSubtle: {
+              '0%, 100%': { transform: 'scale(1)' },
+              '50%': { transform: 'scale(1.05)' },
+            },
+            floatSlow: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-10px)' },
+            }
+          },
+          animation: {
+            shake: 'shake 0.4s ease-in-out',
+            pulseSubtle: 'pulseSubtle 2.5s infinite ease-in-out',
+            floatSlow: 'floatSlow 4s infinite ease-in-out',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom slot machine reel styles */
+    .slot-window {
+      height: 120px;
+      overflow: hidden;
+      position: relative;
+    }
+    .slot-strip {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      will-change: transform;
+    }
+    .slot-item {
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      user-select: none;
+    }
+    /* Polaroid hover aesthetic */
+    .polaroid-card {
+      transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .polaroid-card:hover {
+      transform: scale(1.05) rotate(0deg) !important;
+      z-index: 20;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-blush-50 via-champagne-100 to-[#fff0f3] text-gray-800 font-sans min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 overflow-x-hidden selection:bg-rose-200">
+
+  <!-- Background decorative floating hearts container -->
+  <div id="bg-hearts" class="fixed inset-0 pointer-events-none overflow-hidden z-0 opacity-40"></div>
+
+  <!-- Header Branding -->
+  <header class="w-full max-w-xl mx-auto text-center pt-4 pb-2 z-10">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/80 border border-rose-200 shadow-sm backdrop-blur-sm text-xs font-semibold tracking-wider text-rose-gold uppercase mb-2">
+      <span class="animate-pulse">❤️</span> November 15 &bull; 1 Year Together
+    </div>
+    <h1 class="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-gray-900">
+      For Dev, With All My Love
+    </h1>
+    <p class="text-xs text-gray-500 mt-1 font-medium">A little trip down memory lane from Brian ✨</p>
+  </header>
+
+  <!-- Main Multi-stage Interactive Container -->
+  <main class="w-full max-w-xl mx-auto bg-white/85 backdrop-blur-md rounded-3xl shadow-xl border border-rose-100/80 p-5 sm:p-8 my-auto z-10 transition-all duration-500">
+
+    <!-- ================= STAGE 1: WELCOME SCREEN ================= -->
+    <div id="stage-welcome" class="space-y-6 text-center py-4">
+      <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-rose-100 to-blush-50 border-2 border-rose-200 flex items-center justify-center text-3xl shadow-inner animate-floatSlow">
+        💌
+      </div>
+      <div>
+        <h2 class="font-serif text-2xl font-semibold text-gray-800 mb-2">
+          Happy 1st Anniversary, Dev!
+        </h2>
+        <p class="text-gray-600 text-sm sm:text-base leading-relaxed px-2">
+          365 days fly by when you are having the time of your life. Before you get your anniversary surprise, let's see how well you remember our first year together.
+        </p>
+      </div>
+
+      <div class="bg-champagne-100/70 border border-champagne-300/50 p-4 rounded-2xl text-left text-xs sm:text-sm text-gray-700 space-y-2">
+        <p class="font-semibold text-rose-gold flex items-center gap-1.5">
+          <span>✨</span> How it works:
+        </p>
+        <p>1. Answer 5 fun questions about our memories together.</p>
+        <p>2. Get them all right to unlock the celebration spin.</p>
+        <p>3. Win the grand jackpot Brian put together for you!</p>
+      </div>
+
+      <button id="btn-start" class="w-full py-4 px-6 bg-gradient-to-r from-rose-gold to-[#c87d89] hover:from-[#a65f6a] hover:to-rose-gold text-white font-medium rounded-2xl shadow-lg shadow-rose-200/60 transform active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-base">
+        <span>Start Our Memory Lane</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- ================= STAGE 2: TRIVIA QUESTIONS ================= -->
+    <div id="stage-quiz" class="hidden space-y-6 py-2">
+      <!-- Quiz Progress Header -->
+      <div class="space-y-2">
+        <div class="flex justify-between items-center text-xs font-semibold text-gray-500 uppercase tracking-wider">
+          <span id="quiz-memory-label">Memory 1 of 5</span>
+          <span id="quiz-progress-text">Question 1/5</span>
+        </div>
+        <div class="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden p-0.5">
+          <div id="quiz-progress-bar" class="bg-gradient-to-r from-rose-gold to-blush-400 h-full rounded-full transition-all duration-500" style="width: 20%;"></div>
+        </div>
+      </div>
+
+      <!-- Question Card -->
+      <div id="quiz-card" class="bg-white rounded-2xl p-5 border border-rose-100 shadow-sm space-y-4 transition-all">
+        <div class="flex items-start gap-3">
+          <span id="badge-question-num" class="flex-shrink-0 w-8 h-8 rounded-full bg-rose-50 border border-rose-200 flex items-center justify-center font-bold text-rose-gold text-sm">
+            1
+          </span>
+          <h3 id="question-text" class="font-serif text-lg sm:text-xl font-bold text-gray-800 pt-0.5">
+            Loading Question...
+          </h3>
+        </div>
+
+        <!-- Multiple Choice Options -->
+        <div id="options-container" class="space-y-2.5 pt-2">
+          <!-- Populated by JavaScript -->
+        </div>
+
+        <!-- Feedback & Error Message -->
+        <div id="feedback-msg" class="hidden text-center text-sm font-medium py-2 rounded-xl transition-all"></div>
+      </div>
+
+      <!-- Action Button -->
+      <button id="btn-submit-answer" disabled class="w-full py-3.5 px-6 bg-gray-300 cursor-not-allowed text-white font-medium rounded-2xl shadow transition-all flex items-center justify-center gap-2">
+        <span>Confirm Answer</span>
+      </button>
+    </div>
+
+    <!-- ================= STAGE 3: SLOT MACHINE ================= -->
+    <div id="stage-slot" class="hidden space-y-6 text-center py-2">
+      <div>
+        <span class="text-xs uppercase tracking-widest font-bold text-champagne-600">Perfect Score! 5 out of 5</span>
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-gray-900 mt-1">Dev's Lucky Spin!</h2>
+        <p class="text-xs sm:text-sm text-gray-600 mt-1">
+          You remembered everything! Pull the lever to see what Brian's heart has in store for you.
+        </p>
+      </div>
+
+      <!-- Slot Machine Cabinet -->
+      <div class="relative bg-gradient-to-b from-[#4A1E27] via-[#2F1117] to-[#1F0A0E] p-4 sm:p-6 rounded-3xl shadow-2xl border-4 border-champagne-500 max-w-sm mx-auto">
+        <!-- Machine Top Header Lights -->
+        <div class="flex justify-around items-center mb-3 px-4">
+          <div class="w-3 h-3 rounded-full bg-yellow-300 shadow-[0_0_8px_#fde047] animate-pulse"></div>
+          <span class="font-serif text-xs font-bold tracking-widest text-champagne-300 uppercase">★ BRIAN & DEV &bull; 1 YEAR ★</span>
+          <div class="w-3 h-3 rounded-full bg-yellow-300 shadow-[0_0_8px_#fde047] animate-pulse"></div>
+        </div>
+
+        <!-- Slot Windows Container -->
+        <div class="grid grid-cols-3 gap-2 sm:gap-3 bg-black/60 p-3 rounded-2xl border-2 border-champagne-500/60 shadow-inner">
+          <div class="slot-window rounded-xl bg-gradient-to-b from-gray-100 via-white to-gray-200 border border-gray-400/50 shadow-inner">
+            <div id="reel-1" class="slot-strip">
+              <div class="slot-item">❓</div>
+            </div>
+          </div>
+          <div class="slot-window rounded-xl bg-gradient-to-b from-gray-100 via-white to-gray-200 border border-gray-400/50 shadow-inner">
+            <div id="reel-2" class="slot-strip">
+              <div class="slot-item">❓</div>
+            </div>
+          </div>
+          <div class="slot-window rounded-xl bg-gradient-to-b from-gray-100 via-white to-gray-200 border border-gray-400/50 shadow-inner">
+            <div id="reel-3" class="slot-strip">
+              <div class="slot-item">❓</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 py-2 px-3 bg-black/40 rounded-xl border border-champagne-500/30 text-champagne-200 font-mono text-xs">
+          <span id="slot-status-text">Match 3 ❤️ for the Grand Prize!</span>
+        </div>
+      </div>
+
+      <!-- Spin Button -->
+      <div class="pt-2">
+        <button id="btn-spin" class="w-full max-w-xs mx-auto py-4 px-6 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-gray-950 font-black rounded-2xl shadow-xl shadow-yellow-500/30 transform active:scale-95 transition-all text-lg tracking-wider uppercase flex items-center justify-center gap-2 border-2 border-yellow-200">
+          <span>🎰 PULL & SPIN!</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= STAGE 4: GRAND REVEAL (COLLAGE & LETTER) ================= -->
+    <div id="stage-reveal" class="hidden space-y-8 py-2 animate-fade-in">
+      
+      <!-- Celebratory Banner -->
+      <div class="text-center space-y-2">
+        <div class="inline-block px-4 py-1.5 rounded-full bg-rose-100 text-rose-deep font-semibold text-xs tracking-wider uppercase animate-bounce">
+          🎉 JACKPOT! 3 MATCHING HEARTS! ❤️❤️❤️
+        </div>
+        <h2 class="font-serif text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight">
+          Happy 1 Year Anniversary, Dev!
+        </h2>
+        <p class="text-gray-600 text-sm max-w-md mx-auto">
+          365 days of laughing, exploring, and falling more in love with you every single day.
+        </p>
+      </div>
+
+      <!-- Romantic Photo Collage Grid -->
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <h3 class="font-serif font-bold text-gray-800 text-lg flex items-center gap-2">
+            <span>📸</span> Our Favorite Moments
+          </h3>
+          <!-- Quick Photo Preview / Upload button for testing without code edits -->
+          <button id="btn-toggle-photo-tools" class="text-xs text-rose-gold hover:underline font-semibold flex items-center gap-1">
+            <span>🖼️ Swap Photos</span>
+          </button>
+        </div>
+
+        <!-- Interactive Quick Photo Uploader (Allows Brian to easily drop pictures directly in browser) -->
+        <div id="photo-upload-panel" class="hidden bg-blush-50 border border-rose-200 rounded-xl p-3 text-xs space-y-2">
+          <p class="font-medium text-gray-700">Quickly test or replace photos directly from your computer:</p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <div>
+              <label class="block font-semibold text-gray-600 mb-1">Photo 1:</label>
+              <input type="file" accept="image/*" class="photo-file-input text-xs w-full" data-target="photo-img-1">
+            </div>
+            <div>
+              <label class="block font-semibold text-gray-600 mb-1">Photo 2:</label>
+              <input type="file" accept="image/*" class="photo-file-input text-xs w-full" data-target="photo-img-2">
+            </div>
+            <div>
+              <label class="block font-semibold text-gray-600 mb-1">Photo 3:</label>
+              <input type="file" accept="image/*" class="photo-file-input text-xs w-full" data-target="photo-img-3">
+            </div>
+          </div>
+          <p class="text-[11px] text-gray-500 italic">Tip: When deploying to your website, place your pictures in the same folder and update the image src paths in the HTML!</p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3.5 pt-1">
+          <!-- Photo 1 -->
+          <div class="polaroid-card bg-white p-2 sm:p-2.5 rounded-xl shadow-md border border-gray-100 rotate-[-2deg]">
+            <div class="w-full aspect-[4/5] rounded-lg overflow-hidden bg-rose-50">
+              <img id="photo-img-1" 
+                   src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=600&q=80" 
+                   alt="Special moment 1" 
+                   onerror="this.src='https://placehold.co/400x500/ffe3e3/914d57?text=Our+First+Photo';"
+                   class="w-full h-full object-cover">
+            </div>
+            <p id="caption-1" class="text-center font-serif text-[11px] sm:text-xs text-gray-600 pt-2 font-medium">Where it all started</p>
+          </div>
+
+          <!-- Photo 2 -->
+          <div class="polaroid-card bg-white p-2 sm:p-2.5 rounded-xl shadow-md border border-gray-100 rotate-[3deg]">
+            <div class="w-full aspect-[4/5] rounded-lg overflow-hidden bg-rose-50">
+              <img id="photo-img-2" 
+                   src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=600&q=80" 
+                   alt="Special moment 2" 
+                   onerror="this.src='https://placehold.co/400x500/ffe3e3/914d57?text=Our+Favorite+Trip';"
+                   class="w-full h-full object-cover">
+            </div>
+            <p id="caption-2" class="text-center font-serif text-[11px] sm:text-xs text-gray-600 pt-2 font-medium">Our adventures</p>
+          </div>
+
+          <!-- Photo 3 -->
+          <div class="polaroid-card bg-white p-2 sm:p-2.5 rounded-xl shadow-md border border-gray-100 rotate-[-1deg] col-span-2 sm:col-span-1 max-w-[200px] sm:max-w-none mx-auto w-full">
+            <div class="w-full aspect-[4/5] rounded-lg overflow-hidden bg-rose-50">
+              <img id="photo-img-3" 
+                   src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=600&q=80" 
+                   alt="Special moment 3" 
+                   onerror="this.src='https://placehold.co/400x500/ffe3e3/914d57?text=Us+Always';"
+                   class="w-full h-full object-cover">
+            </div>
+            <p id="caption-3" class="text-center font-serif text-[11px] sm:text-xs text-gray-600 pt-2 font-medium">To forever & always</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Love Letter Section -->
+      <div class="bg-gradient-to-br from-champagne-100/90 via-blush-50 to-white border border-rose-200/70 p-6 rounded-2xl shadow-sm space-y-4">
+        <div class="flex items-center gap-2 border-b border-rose-200/40 pb-3">
+          <span class="text-xl">💌</span>
+          <h4 class="font-serif text-lg font-bold text-gray-800">Brian's Letter To Dev</h4>
+        </div>
+        
+        <div class="font-serif text-gray-700 text-sm sm:text-base leading-relaxed space-y-3 italic">
+          <p>
+            Dearest Dev,
+          </p>
+          <p>
+            Looking back on these past 365 days, meeting you and sharing life with you has been the best thing that ever happened to me. Whether we're out on spontaneous date nights, laughing until our stomachs hurt over silly jokes, or just hanging out doing absolutely nothing, every moment is better with you by my side.
+          </p>
+          <p>
+            You bring so much calm, genuine warmth, and pure happiness into my world. Winning your heart is the greatest jackpot I could ever hit.
+          </p>
+          <p>
+            Happy 1st Anniversary, Dev. Here's to our first year, and to many more beautiful memories ahead of us.
+          </p>
+        </div>
+
+        <div class="text-right pt-2 font-serif font-bold text-rose-gold text-base not-italic">
+          With all my love,<br>Brian ❤️
+        </div>
+      </div>
+
+      <!-- Replay / Celebration button -->
+      <div class="text-center pt-2">
+        <button id="btn-fire-confetti" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-rose-200 text-rose-gold font-medium text-xs hover:bg-rose-50 shadow-sm transition-all active:scale-95">
+          <span>✨ Shower Dev with Confetti!</span>
+        </button>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Sweet Footer -->
+  <footer class="w-full max-w-xl mx-auto text-center py-4 text-xs text-gray-400 z-10">
+    Dev &amp; Brian &bull; November 15 &bull; kyntra.dev
+  </footer>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    /* ==========================================================
+       1. CUSTOMIZABLE 5 TRIVIA QUESTIONS DATA
+       Brian: You can easily edit any questions, options, and answers right here!
+       ========================================================== */
+    const triviaQuestions = [
+      {
+        memoryLabel: "Memory #1",
+        question: "Where did Brian take you on our very first official date?",
+        options: [
+          "That cozy candlelit dinner where we couldn't stop talking",
+          "A quiet coffee walk that turned into hours together",
+          "Our favorite local hangout spot",
+          "An impromptu evening drive under the stars"
+        ],
+        // Index of the correct answer (0 = 1st, 1 = 2nd, 2 = 3rd, 3 = 4th)
+        correctIndex: 0,
+        hintText: "Think back to when we were both a little nervous!"
+      },
+      {
+        memoryLabel: "Memory #2",
+        question: "What is Brian's go-to snack or guilty pleasure food when we chill together?",
+        options: [
+          "Late night pizza slices",
+          "Ice cream and sweet treats",
+          "Salty chips and guacamole",
+          "Anything as long as you're sharing it with him"
+        ],
+        correctIndex: 3,
+        hintText: "You already know everything is better shared with you!"
+      },
+      {
+        memoryLabel: "Memory #3",
+        question: "What was one of our funniest or most memorable adventures this year?",
+        options: [
+          "Getting hopelessly lost but laughing the entire way",
+          "Cooking together and almost setting off the smoke detector",
+          "Singing out of tune in the car with the windows rolled down",
+          "All of our spontaneous late-night conversations"
+        ],
+        correctIndex: 1,
+        hintText: "Remember the chef moments in the kitchen!"
+      },
+      {
+        memoryLabel: "Memory #4",
+        question: "What song or moment always reminds Brian of you?",
+        options: [
+          "The song playing in the background during our long drives",
+          "Our favorite playlist that we put on every weekend",
+          "Any song that makes you start randomly dancing",
+          "Every love song on the radio now"
+        ],
+        correctIndex: 2,
+        hintText: "Brian loves seeing your spontaneous happy dance!"
+      },
+      {
+        memoryLabel: "Memory #5",
+        question: "What is Brian's absolute favorite thing about Dev?",
+        options: [
+          "Your incredible smile that lights up any room",
+          "How sweet, caring, and thoughtful you are",
+          "How easily you make him laugh and feel at home",
+          "All of the above, plus a million more reasons!"
+        ],
+        correctIndex: 3,
+        hintText: "You hold the key to his heart!"
+      }
+    ];
+
+    /* ==========================================================
+       2. WEB AUDIO API SYNTHESIZER (No external audio files needed)
+       ========================================================== */
+    class SoundFX {
+      constructor() {
+        this.ctx = null;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+        if (this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      // Short click sound for button interactions
+      playClick() {
+        try {
+          this.init();
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(440, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(880, this.ctx.currentTime + 0.05);
+          gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.05);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.05);
+        } catch (e) {
+          console.warn("Audio not supported or blocked", e);
+        }
+      }
+
+      // Slot tick sound while spinning
+      playTick() {
+        try {
+          this.init();
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(200 + Math.random() * 200, this.ctx.currentTime);
+          gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.04);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.04);
+        } catch(e) {}
+      }
+
+      // Grand celebration chime fanfare
+      playJackpotFanfare() {
+        try {
+          this.init();
+          const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98]; // C5, E5, G5, C6, E6, G6
+          notes.forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            const startTime = this.ctx.currentTime + (idx * 0.12);
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, startTime);
+            gain.gain.setValueAtTime(0.2, startTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.6);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(startTime);
+            osc.stop(startTime + 0.6);
+          });
+        } catch (e) {}
+      }
+
+      // Friendly retry boop
+      playWrong() {
+        try {
+          this.init();
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(220, this.ctx.currentTime);
+          osc.frequency.linearRampToValueAtTime(150, this.ctx.currentTime + 0.2);
+          gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+          gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.2);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.2);
+        } catch(e) {}
+      }
+    }
+
+    const sound = new SoundFX();
+
+    /* ==========================================================
+       3. DOM ELEMENTS & STATE MANAGEMENT
+       ========================================================== */
+    const stageWelcome = document.getElementById('stage-welcome');
+    const stageQuiz = document.getElementById('stage-quiz');
+    const stageSlot = document.getElementById('stage-slot');
+    const stageReveal = document.getElementById('stage-reveal');
+
+    const btnStart = document.getElementById('btn-start');
+    const quizMemoryLabel = document.getElementById('quiz-memory-label');
+    const quizProgressText = document.getElementById('quiz-progress-text');
+    const quizProgressBar = document.getElementById('quiz-progress-bar');
+    const badgeQuestionNum = document.getElementById('badge-question-num');
+    const questionText = document.getElementById('question-text');
+    const optionsContainer = document.getElementById('options-container');
+    const feedbackMsg = document.getElementById('feedback-msg');
+    const btnSubmitAnswer = document.getElementById('btn-submit-answer');
+    const quizCard = document.getElementById('quiz-card');
+
+    const btnSpin = document.getElementById('btn-spin');
+    const slotStatusText = document.getElementById('slot-status-text');
+    const reel1 = document.getElementById('reel-1');
+    const reel2 = document.getElementById('reel-2');
+    const reel3 = document.getElementById('reel-3');
+    const btnFireConfetti = document.getElementById('btn-fire-confetti');
+
+    // Photo preview upload tools
+    const btnTogglePhotoTools = document.getElementById('btn-toggle-photo-tools');
+    const photoUploadPanel = document.getElementById('photo-upload-panel');
+    const fileInputs = document.querySelectorAll('.photo-file-input');
+
+    let currentQuestionIndex = 0;
+    let selectedOptionIndex = null;
+    let isSpinning = false;
+
+    // Toggle photo uploader tool
+    btnTogglePhotoTools.addEventListener('click', () => {
+      photoUploadPanel.classList.toggle('hidden');
+    });
+
+    // Handle local file picking for immediate instant photo preview
+    fileInputs.forEach(input => {
+      input.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          const targetImgId = input.getAttribute('data-target');
+          reader.onload = function(evt) {
+            document.getElementById(targetImgId).src = evt.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    });
+
+    /* ==========================================================
+       4. QUIZ LOGIC (5 Questions)
+       ========================================================== */
+    btnStart.addEventListener('click', () => {
+      sound.playClick();
+      stageWelcome.classList.add('hidden');
+      stageQuiz.classList.remove('hidden');
+      loadQuestion(0);
+    });
+
+    function loadQuestion(index) {
+      currentQuestionIndex = index;
+      selectedOptionIndex = null;
+      feedbackMsg.classList.add('hidden');
+      btnSubmitAnswer.disabled = true;
+      btnSubmitAnswer.className = "w-full py-3.5 px-6 bg-gray-300 cursor-not-allowed text-white font-medium rounded-2xl shadow transition-all flex items-center justify-center gap-2";
+
+      const q = triviaQuestions[index];
+      quizMemoryLabel.textContent = q.memoryLabel;
+      quizProgressText.textContent = `Question ${index + 1}/${triviaQuestions.length}`;
+      badgeQuestionNum.textContent = index + 1;
+      questionText.textContent = q.question;
+
+      const progressPercent = ((index + 1) / triviaQuestions.length) * 100;
+      quizProgressBar.style.width = `${progressPercent}%`;
+
+      // Render options
+      optionsContainer.innerHTML = '';
+      q.options.forEach((optText, optIdx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `option-choice w-full text-left p-3.5 sm:p-4 rounded-xl border border-gray-200 hover:border-rose-300 hover:bg-blush-50/50 transition-all text-sm sm:text-base font-medium text-gray-700 flex items-center justify-between group`;
+        btn.innerHTML = `
+          <span>${optText}</span>
+          <span class="w-5 h-5 rounded-full border border-gray-300 flex items-center justify-center text-xs group-hover:border-rose-400">
+            <span class="radio-dot w-2.5 h-2.5 rounded-full bg-transparent"></span>
+          </span>
+        `;
+
+        btn.addEventListener('click', () => {
+          sound.playClick();
+          selectOption(optIdx);
+        });
+
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    function selectOption(optionIndex) {
+      selectedOptionIndex = optionIndex;
+      const choices = optionsContainer.querySelectorAll('.option-choice');
+      choices.forEach((c, idx) => {
+        const dot = c.querySelector('.radio-dot');
+        if (idx === optionIndex) {
+          c.classList.add('border-rose-gold', 'bg-blush-100/60', 'text-rose-deep');
+          c.classList.remove('border-gray-200');
+          dot.classList.remove('bg-transparent');
+          dot.classList.add('bg-rose-gold');
+        } else {
+          c.classList.remove('border-rose-gold', 'bg-blush-100/60', 'text-rose-deep');
+          c.classList.add('border-gray-200');
+          dot.classList.add('bg-transparent');
+          dot.classList.remove('bg-rose-gold');
+        }
+      });
+
+      // Enable submit button
+      btnSubmitAnswer.disabled = false;
+      btnSubmitAnswer.className = "w-full py-3.5 px-6 bg-gradient-to-r from-rose-gold to-[#c87d89] hover:from-[#a65f6a] hover:to-rose-gold text-white font-medium rounded-2xl shadow-lg shadow-rose-200/50 transform active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer";
+    }
+
+    btnSubmitAnswer.addEventListener('click', () => {
+      if (selectedOptionIndex === null) return;
+      const currentQ = triviaQuestions[currentQuestionIndex];
+
+      if (selectedOptionIndex === currentQ.correctIndex) {
+        sound.playClick();
+        feedbackMsg.textContent = "✨ Correct! Brian knew you'd get it!";
+        feedbackMsg.className = "text-center text-sm font-semibold py-2.5 px-4 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200";
+        feedbackMsg.classList.remove('hidden');
+
+        setTimeout(() => {
+          if (currentQuestionIndex + 1 < triviaQuestions.length) {
+            loadQuestion(currentQuestionIndex + 1);
+          } else {
+            // All 5 correct! Proceed to slot machine
+            stageQuiz.classList.add('hidden');
+            stageSlot.classList.remove('hidden');
+            initSlotMachine();
+          }
+        }, 800);
+
+      } else {
+        // Wrong answer
+        sound.playWrong();
+        quizCard.classList.remove('animate-shake');
+        void quizCard.offsetWidth;
+        quizCard.classList.add('animate-shake');
+
+        feedbackMsg.textContent = `${currentQ.hintText} Give it another shot! ❤️`;
+        feedbackMsg.className = "text-center text-sm font-semibold py-2.5 px-4 rounded-xl bg-rose-50 text-rose-600 border border-rose-200";
+        feedbackMsg.classList.remove('hidden');
+      }
+    });
+
+    /* ==========================================================
+       5. SLOT MACHINE LOGIC (RIGGED TO 3 HEARTS)
+       ========================================================== */
+    const slotSymbols = ['💎', '🌸', '7️⃣', '🍀', '✨', '☕', '❤️'];
+    const TARGET_SYMBOL = '❤️';
+    const ITEM_HEIGHT = 120;
+
+    function buildReelStrip(finalSymbol) {
+      const strip = [];
+      for (let i = 0; i < 24; i++) {
+        const rand = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
+        strip.push(rand);
+      }
+      strip.push(finalSymbol);
+      return strip;
+    }
+
+    function renderReel(reelEl, symbolList) {
+      reelEl.innerHTML = '';
+      symbolList.forEach(s => {
+        const div = document.createElement('div');
+        div.className = 'slot-item';
+        div.textContent = s;
+        reelEl.appendChild(div);
+      });
+      reelEl.style.transform = `translateY(0px)`;
+    }
+
+    function initSlotMachine() {
+      [reel1, reel2, reel3].forEach(reel => {
+        renderReel(reel, ['❤️']);
+      });
+    }
+
+    btnSpin.addEventListener('click', () => {
+      if (isSpinning) return;
+      isSpinning = true;
+      btnSpin.disabled = true;
+      btnSpin.classList.add('opacity-50', 'cursor-not-allowed');
+      slotStatusText.textContent = "Spinning... Brian's heart is locked in!";
+
+      const tickInterval = setInterval(() => {
+        sound.playTick();
+      }, 90);
+
+      const strip1 = buildReelStrip(TARGET_SYMBOL);
+      const strip2 = buildReelStrip(TARGET_SYMBOL);
+      const strip3 = buildReelStrip(TARGET_SYMBOL);
+
+      renderReel(reel1, strip1);
+      renderReel(reel2, strip2);
+      renderReel(reel3, strip3);
+
+      const totalItems = strip1.length;
+      const targetY = -((totalItems - 1) * ITEM_HEIGHT);
+
+      setTimeout(() => {
+        reel1.style.transition = 'transform 2.2s cubic-bezier(0.12, 0.8, 0.32, 1)';
+        reel1.style.transform = `translateY(${targetY}px)`;
+      }, 50);
+
+      setTimeout(() => {
+        reel2.style.transition = 'transform 2.7s cubic-bezier(0.12, 0.8, 0.32, 1)';
+        reel2.style.transform = `translateY(${targetY}px)`;
+      }, 250);
+
+      setTimeout(() => {
+        reel3.style.transition = 'transform 3.2s cubic-bezier(0.12, 0.8, 0.32, 1)';
+        reel3.style.transform = `translateY(${targetY}px)`;
+      }, 450);
+
+      setTimeout(() => {
+        clearInterval(tickInterval);
+        sound.playJackpotFanfare();
+        slotStatusText.textContent = "❤️❤️❤️ 3 HEARTS! Dev Won Brian's Whole Heart! ❤️❤️❤️";
+        
+        triggerJackpotCelebration();
+
+        setTimeout(() => {
+          stageSlot.classList.add('hidden');
+          stageReveal.classList.remove('hidden');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          triggerConfettiBurst();
+        }, 1200);
+
+      }, 3700);
+    });
+
+    /* ==========================================================
+       6. CELEBRATION & CONFETTI
+       ========================================================== */
+    function triggerJackpotCelebration() {
+      confetti({
+        particleCount: 100,
+        spread: 80,
+        origin: { y: 0.6 }
+      });
+    }
+
+    function triggerConfettiBurst() {
+      const duration = 3.5 * 1000;
+      const animationEnd = Date.now() + duration;
+      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
+
+      function randomInRange(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      const interval = setInterval(function() {
+        const timeLeft = animationEnd - Date.now();
+        if (timeLeft <= 0) {
+          return clearInterval(interval);
+        }
+        const particleCount = 50 * (timeLeft / duration);
+        confetti(Object.assign({}, defaults, { 
+          particleCount, 
+          origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+          colors: ['#fa5252', '#ff8787', '#D4AF37', '#fff', '#B76E79']
+        }));
+        confetti(Object.assign({}, defaults, { 
+          particleCount, 
+          origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+          colors: ['#fa5252', '#ff8787', '#D4AF37', '#fff', '#B76E79']
+        }));
+      }, 250);
+    }
+
+    btnFireConfetti.addEventListener('click', () => {
+      sound.playClick();
+      triggerConfettiBurst();
+    });
+
+    /* ==========================================================
+       7. SUBTLE FLOATING HEARTS BACKGROUND
+       ========================================================== */
+    const bgHearts = document.getElementById('bg-hearts');
+    const heartEmojis = ['❤️', '💖', '✨', '🌸', '💕'];
+    for (let i = 0; i < 15; i++) {
+      const heart = document.createElement('div');
+      heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+      heart.className = 'absolute select-none opacity-40';
+      heart.style.left = `${Math.random() * 100}%`;
+      heart.style.top = `${Math.random() * 100}%`;
+      heart.style.fontSize = `${Math.random() * 20 + 14}px`;
+      heart.style.animation = `floatSlow ${Math.random() * 4 + 4}s infinite ease-in-out ${Math.random() * 2}s`;
+      bgHearts.appendChild(heart);
+    }
+  </script>
+</body>
+</html>
